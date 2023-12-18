@@ -9,7 +9,7 @@ const courseRoutes = require("./routes/Course");
 const dbConnect = require("./config/database");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const {cloudinaryConnect } = require("./config/cloudinary");
+const { cloudinaryConnect } = require("./config/cloudinary");
 const fileUpload = require("express-fileupload");
 const dotenv = require("dotenv");
 
@@ -18,23 +18,26 @@ const PORT = process.env.PORT || 4000;
 
 //database connect
 dbConnect();
+
 //middlewares
 app.use(express.json());
 app.use(cookieParser());
-app.use(
-	cors({
-		origin:["http://localhost:3000","*"],
-		credentials:true,
-	})
-)
+
+app.use((req, res, next) => {
+  res.append("Access-Control-Allow-Origin", ["*"]);
+  res.append("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,PATCH");
+  res.append("Access-Control-Allow-Headers", "Content-Type,Authorization");
+  res.append("Access-Control-Allow-Credentials", "true");
+  next();
+});
 
 app.use(
-	fileUpload({
-		useTempFiles:true,
-		tempFileDir:"/tmp",
-	})
-)
- 
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "/tmp",
+  })
+);
+
 //cloudinary connection
 cloudinaryConnect();
 
@@ -47,13 +50,12 @@ app.use("/api/v1/payment", paymentRoutes);
 //def route
 
 app.get("/", (req, res) => {
-	return res.json({
-		success:true,
-		message:'Your server is up and running....'
-	});
+  return res.json({
+    success: true,
+    message: "Your server is up and running....",
+  });
 });
 
 app.listen(PORT, () => {
-	console.log(`App is running at ${PORT}`)
-})
-
+  console.log(`App is running at ${PORT}`);
+});

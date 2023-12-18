@@ -1,6 +1,6 @@
 const Section = require("../models/Section");
 const Course = require("../models/Course");
-const SubSection = require("../models/Subsection");
+const SubSection = require("../models/SubSection");
 // const { default: SubSectionModal } = require("../../src/component/core/Dashboard/AddCourse/CourseBuilder/SubSectionModal");
 // CREATE a new section
 exports.createSection = async (req, res) => {
